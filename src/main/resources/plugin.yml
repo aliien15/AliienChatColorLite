@@ -1,0 +1,32 @@
+name: AliienChatColorLite
+version: '1.0.0'
+main: com.aliiensmp.aliienChatColorLite.AliienChatColorLite
+api-version: '1.21'
+author: Aliien15
+description: The Lite version of AliienChatColorLite! Check out the Premium version for a GUI, Hex Commands, and Admin controls!
+
+softdepend:
+  - PlaceholderAPI
+
+commands:
+  chatcolor:
+    description: The main command to manage your chat colors.
+    usage: /<command> <set|clear|admin>
+    aliases: [cc, colors, color, chatcolors]
+
+permissions:
+  aliien.chatcolor.set:
+    description: Allows players to manually set their color via command.
+    default: true
+  aliien.chatcolor.clear:
+    description: Allows players to clear their current chat color.
+    default: true
+  aliien.chatcolor.admin:
+    description: Base permission to access the /cc admin command structure.
+    default: op
+  aliien.chatcolor.admin.reload:
+    description: Allows players to reload the plugin config.
+    default: op
+  aliien.chatcolor.version-notify:
+    description: Receive notifications for new plugin updates.
+    default: op

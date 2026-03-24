@@ -1,0 +1,19 @@
+# =======================================================
+# AliienChatColorLite - Config
+# =======================================================
+colors:
+  # The name of the color (does not change anything on its own, but also dont mess with this on colors that people are actively using)
+  pastel_pink:
+    # The prefix/colors of your chat color
+    color: "<#FFB6C1>"
+    # The required permission to use your chat color
+    permission: "aliien.color.pastel_pink"
+  sky_blue:
+    color: "<#89CFF0>"
+    permission: "aliien.color.sky_blue"
+  grad_pink_lemonade:
+    color: "<gradient:#FFB6C1:#FDFD96>"
+    permission: "aliien.color.grad_pink_lemonade"
+
+# DO NOT under any circumstance touch this unless you are told to by the official support
+config-version: 1

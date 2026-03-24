@@ -1,0 +1,23 @@
+# =======================================================
+# AliienChatColorLite - Messages
+# =======================================================
+messages:
+  # If the player tried to use an invalid color
+  invalid-color: "<red>Sorry, that color is invalid/doesn't exist!"
+  # If the player successfully equips a chat color
+  success: "<green>You have successfully updated your chat color!"
+  # If a command is not used correctly
+  incorrect-cmd-usage: "<red>This command was not used correctly!"
+  # If a player does not have permission to use a command
+  no-perms: "<red>You do not have permission to use this!"
+  # If the plugin is successfully reloaded
+  reload: "<green>AliienChatColorLite has been reloaded!"
+  # If there was an error while reloading the plugin
+  fail-reload: "<red>There was an error while reloading AliienChatColorLite (please check the console and report the bug)"
+  # If a chat color is cleared/removed
+  clear-color: "<green>You have successfully cleared the chat color!"
+  # If there is a new version available
+  new-version: "<green>A new AliienChatColorLite version is now available!"
+
+# DO NOT under any circumstance touch this unless you are told to by the official support
+config-version: 1
