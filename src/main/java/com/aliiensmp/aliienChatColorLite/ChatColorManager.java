@@ -1,23 +1,15 @@
 package com.aliiensmp.aliienChatColorLite;
 
-import com.aliiensmp.aliienChatColorLite.utils.ChatColorCache;
 import dev.dejvokep.boostedyaml.YamlDocument;
-import dev.dejvokep.boostedyaml.block.implementation.Section;
-import org.bukkit.NamespacedKey;
-import org.bukkit.entity.Player;
-import org.bukkit.persistence.PersistentDataType;
 
-import java.util.HashMap;
-import java.util.Map;
-
+/**
+ * Keeps message configuration values in memory for fast command and listener access.
+ */
 public class ChatColorManager {
 
-    private final AliienChatColorLite plugin;
-    private final YamlDocument config;
-    private final YamlDocument messages;
-    private final NamespacedKey colorKey;
+    private static final String EMPTY_PREFIX = "";
 
-    private final Map<String, ChatColorCache> colorCache = new HashMap<>();
+    private final YamlDocument messages;
 
     private String invalidColorMsg;
     private String successMsg;
@@ -28,36 +20,19 @@ public class ChatColorManager {
     private String clearColorMsg;
     private String newVersionMsg;
 
-    public ChatColorManager(AliienChatColorLite plugin, YamlDocument config, YamlDocument messages) {
-        this.plugin = plugin;
-        this.config = config;
+    /**
+     * Creates the message manager.
+     *
+     * @param messages loaded messages document
+     */
+    public ChatColorManager(YamlDocument messages) {
         this.messages = messages;
-        this.colorKey = new NamespacedKey(plugin, "chosen_chat_color");
     }
 
-    public void setPlayerColor(Player player, String colorName) {
-        player.getPersistentDataContainer().set(colorKey, PersistentDataType.STRING, colorName);
-    }
-
-    public void removePlayerColor(Player player) {
-        player.getPersistentDataContainer().remove(colorKey);
-    }
-
-    public String getPlayerColor(Player player) {
-        if (player.getPersistentDataContainer().has(colorKey, PersistentDataType.STRING)) {
-            return player.getPersistentDataContainer().get(colorKey, PersistentDataType.STRING);
-        }
-        return null;
-    }
-
-    public String getFormat(String colorId) {
-        ChatColorCache info = colorCache.get(colorId.toLowerCase());
-        return (info != null) ? info.getFormat() : "";
-    }
-
-    public void loadColorsToCache() {
-        colorCache.clear();
-
+    /**
+     * Reloads message values from the current messages document.
+     */
+    public void reload() {
         invalidColorMsg = messages.getString("messages.invalid-color", "<red>Sorry, that color is invalid/doesn't exist!");
         successMsg = messages.getString("messages.success", "<green>You have successfully updated your chat color!");
         incorrectCmdUsageMsg = messages.getString("messages.incorrect-cmd-usage", "<red>This command was not used correctly!");
@@ -66,26 +41,86 @@ public class ChatColorManager {
         failReloadMsg = messages.getString("messages.fail-reload", "<red>There was an error while reloading (check console)");
         clearColorMsg = messages.getString("messages.clear-color", "<green>You have successfully cleared the chat color!");
         newVersionMsg = messages.getString("messages.new-version", "<green>A new AliienChatColorLite version is now available!");
-
-        Section colorsSection = config.getSection("colors");
-        if (colorsSection != null) {
-            for (String key : colorsSection.getRoutesAsStrings(false)) {
-                String format = colorsSection.getString(key + ".color", "");
-                String perm = colorsSection.getString(key + ".permission", "");
-                colorCache.put(key, new ChatColorCache(key, format, perm));
-            }
-            plugin.getLogger().info("Successfully loaded " + colorCache.size() + " chat colors into cache!");
-        }
     }
 
-    public Map<String, ChatColorCache> getCachedColors() { return colorCache; }
+    /**
+     * Gets the prefix passed to AliienCore message utilities.
+     *
+     * @return empty prefix for the lite plugin
+     */
+    public String getPrefix() {
+        return EMPTY_PREFIX;
+    }
 
-    public String getInvalidColorMsg() { return invalidColorMsg; }
-    public String getSuccessMsg() { return successMsg; }
-    public String getIncorrectCmdUsageMsg() { return incorrectCmdUsageMsg; }
-    public String getNoPermsMsg() { return noPermsMsg; }
-    public String getReloadMsg() { return reloadMsg; }
-    public String getFailReloadMsg() { return failReloadMsg; }
-    public String getClearColorMsg() { return clearColorMsg; }
-    public String getNewVersionMsg() { return newVersionMsg; }
+    /**
+     * Gets the invalid color message.
+     *
+     * @return configured invalid color message
+     */
+    public String getInvalidColorMsg() {
+        return invalidColorMsg;
+    }
+
+    /**
+     * Gets the success message.
+     *
+     * @return configured success message
+     */
+    public String getSuccessMsg() {
+        return successMsg;
+    }
+
+    /**
+     * Gets the incorrect command usage message.
+     *
+     * @return configured incorrect usage message
+     */
+    public String getIncorrectCmdUsageMsg() {
+        return incorrectCmdUsageMsg;
+    }
+
+    /**
+     * Gets the no permission message.
+     *
+     * @return configured no permission message
+     */
+    public String getNoPermsMsg() {
+        return noPermsMsg;
+    }
+
+    /**
+     * Gets the reload success message.
+     *
+     * @return configured reload message
+     */
+    public String getReloadMsg() {
+        return reloadMsg;
+    }
+
+    /**
+     * Gets the reload failure message.
+     *
+     * @return configured reload failure message
+     */
+    public String getFailReloadMsg() {
+        return failReloadMsg;
+    }
+
+    /**
+     * Gets the clear color message.
+     *
+     * @return configured clear color message
+     */
+    public String getClearColorMsg() {
+        return clearColorMsg;
+    }
+
+    /**
+     * Gets the update notification message.
+     *
+     * @return configured update notification message
+     */
+    public String getNewVersionMsg() {
+        return newVersionMsg;
+    }
 }

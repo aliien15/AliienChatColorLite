@@ -1,8 +1,9 @@
 package com.aliiensmp.aliienChatColorLite.hooks;
 
 import com.aliiensmp.aliienChatColorLite.AliienChatColorLite;
-import com.aliiensmp.aliienChatColorLite.ChatColorManager;
-import com.aliiensmp.aliienChatColorLite.utils.ChatColorCache;
+import com.aliiensmp.aliienChatColorLite.cache.ChatColorCache;
+import com.aliiensmp.aliienChatColorLite.cache.ChatColorRegistry;
+import com.aliiensmp.aliienChatColorLite.service.PlayerColorService;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -11,11 +12,24 @@ import org.jetbrains.annotations.NotNull;
 public class PlaceholderAPIExpansion extends PlaceholderExpansion {
 
     private final AliienChatColorLite plugin;
-    private final ChatColorManager colorManager;
+    private final ChatColorRegistry colorRegistry;
+    private final PlayerColorService playerColorService;
 
-    public PlaceholderAPIExpansion(AliienChatColorLite plugin, ChatColorManager colorManager) {
+    /**
+     * Creates the PlaceholderAPI expansion.
+     *
+     * @param plugin owning plugin instance
+     * @param colorRegistry configured color registry
+     * @param playerColorService player color service
+     */
+    public PlaceholderAPIExpansion(
+            AliienChatColorLite plugin,
+            ChatColorRegistry colorRegistry,
+            PlayerColorService playerColorService
+    ) {
         this.plugin = plugin;
-        this.colorManager = colorManager;
+        this.colorRegistry = colorRegistry;
+        this.playerColorService = playerColorService;
     }
 
     @Override
@@ -44,7 +58,7 @@ public class PlaceholderAPIExpansion extends PlaceholderExpansion {
         Player player = offlinePlayer.getPlayer();
         if (player == null) return "";
 
-        String colorId = colorManager.getPlayerColor(player);
+        String colorId = playerColorService.getPlayerColor(player);
 
         // %aliienchatcolor_active%
         if (params.equalsIgnoreCase("active"))
@@ -52,17 +66,17 @@ public class PlaceholderAPIExpansion extends PlaceholderExpansion {
 
         // %aliienchatcolor_format%
         if (params.equalsIgnoreCase("format"))
-            return colorId == null ? "None" : colorManager.getFormat(colorId);
+            return colorId == null ? "None" : colorRegistry.getFormat(colorId);
 
         // %aliienchatcolor_has_(color)%
         if (params.startsWith("has_")) {
-            String requestedColor = params.substring(4).toLowerCase();
+            String requestedColor = params.substring(4);
 
-            ChatColorCache color = colorManager.getCachedColors().get(requestedColor);
+            ChatColorCache color = colorRegistry.getColor(requestedColor);
             if (color == null)
                 return "False";
 
-            return player.hasPermission(color.getPermission()) ? "True" : "False";
+            return player.hasPermission(color.permission()) ? "True" : "False";
         }
 
         return null;

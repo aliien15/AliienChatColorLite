@@ -1,7 +1,8 @@
 name: AliienChatColorLite
-version: '1.0.0'
+version: '1.0.1'
 main: com.aliiensmp.aliienChatColorLite.AliienChatColorLite
 api-version: '1.21'
+folia-supported: true
 author: Aliien15
 description: The Lite version of AliienChatColorLite! Check out the Premium version for a GUI, Hex Commands, and Admin controls!
 

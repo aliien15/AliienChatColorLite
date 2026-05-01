@@ -1,33 +1,33 @@
 package com.aliiensmp.aliienChatColorLite.listeners;
 
-import com.aliiensmp.aliienChatColorLite.ChatColorManager;
+import com.aliiensmp.aliienChatColorLite.service.PlayerColorService;
 import io.papermc.paper.event.player.AsyncChatEvent;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
+/**
+ * Applies selected chat colors to player messages.
+ */
 public class ChatListener implements Listener {
 
-    private final ChatColorManager colorManager;
-    private final MiniMessage mm = MiniMessage.miniMessage();
+    private final PlayerColorService playerColorService;
 
-    public ChatListener(ChatColorManager colorManager) {
-        this.colorManager = colorManager;
+    /**
+     * Creates the chat listener.
+     *
+     * @param playerColorService player color service
+     */
+    public ChatListener(PlayerColorService playerColorService) {
+        this.playerColorService = playerColorService;
     }
 
+    /**
+     * Colors async chat messages using the preloaded player cache.
+     *
+     * @param event async chat event
+     */
     @EventHandler
     public void onPlayerChat(AsyncChatEvent event) {
-        Player player = event.getPlayer();
-        String colorId = colorManager.getPlayerColor(player);
-
-        if (colorId != null) {
-            String colorFormat = colorManager.getFormat(colorId);
-            Component currentMessage = event.message();
-            Component coloredMessage = mm.deserialize(colorFormat + "<content>", Placeholder.component("content", currentMessage));
-            event.message(coloredMessage);
-        }
+        event.message(playerColorService.applyColor(event.getPlayer(), event.message()));
     }
 }
