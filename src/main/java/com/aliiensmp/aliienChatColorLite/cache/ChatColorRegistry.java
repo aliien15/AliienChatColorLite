@@ -1,7 +1,7 @@
 package com.aliiensmp.aliienChatColorLite.cache;
 
-import dev.dejvokep.boostedyaml.YamlDocument;
-import dev.dejvokep.boostedyaml.block.implementation.Section;
+import com.aliiensmp.core.lib.boostedyaml.YamlDocument;
+import com.aliiensmp.core.lib.boostedyaml.block.implementation.Section;
 import org.bukkit.command.CommandSender;
 
 import java.util.LinkedHashMap;

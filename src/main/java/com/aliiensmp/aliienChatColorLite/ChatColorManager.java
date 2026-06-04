@@ -1,6 +1,6 @@
 package com.aliiensmp.aliienChatColorLite;
 
-import dev.dejvokep.boostedyaml.YamlDocument;
+import com.aliiensmp.core.lib.boostedyaml.YamlDocument;
 
 /**
  * Keeps message configuration values in memory for fast command and listener access.
